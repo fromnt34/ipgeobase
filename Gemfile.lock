@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    ipgeobase (0.1.0)
+    ipgeobase (1.0.0)
       addressable
       nokogiri-happymapper
 
