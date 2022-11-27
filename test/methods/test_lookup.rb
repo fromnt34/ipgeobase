@@ -1,20 +1,19 @@
 # frozen_string_literal: true
 
 require "test_helper"
-require_relative "lookup_test_helper" # -
 
 class TestIpgeobaseLookup < Minitest::Test
   def test_ipgeobase_lookup_is_exist
     assert { Ipgeobase.respond_to? :lookup }
   end
 
-  class TestIpgeobaseLookupMetadataProperties < Minitest::Test
+  class TestIpgeobaseLookupMetadataProperties < TestHelper
     def setup
       request_ip = "8.8.8.8"
       url = API.template.expand(ip: request_ip).to_s
 
       stub_request(:get, url)
-        .to_return body: LookupTestHelper.stub
+        .to_return body: load_fixture("stub.xml")
 
       @metadata = Ipgeobase.lookup request_ip
     end
