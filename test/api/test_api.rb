@@ -8,8 +8,8 @@ class TestAPI < TestHelper
     assert_instance_of Class, API
   end
 
-  class Methods < TestAPI
-    class Template < Methods
+  class TestAPIMethods < TestAPI
+    class TestTemplate < TestAPIMethods
       def test_return_template_object
         assert_instance_of Addressable::Template, API.template
       end

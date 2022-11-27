@@ -2,7 +2,7 @@
 
 require_relative "../test_ipgeobase"
 
-class Lookup < TestIpgeobase
+class TestIpgeobaseLookup < TestIpgeobase
   def setup
     request_ip = "8.8.8.8"
     url = API.template.expand(ip: request_ip).to_s
@@ -24,7 +24,7 @@ class Lookup < TestIpgeobase
     assert_instance_of Ipgeobase::Metadata, @metadata
   end
 
-  class Properties < Lookup
+  class TestProperties < TestIpgeobaseLookup
     def test_is_exist
       expected_properties = %i[city country countryCode lat lon]
 
