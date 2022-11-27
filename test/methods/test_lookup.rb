@@ -1,28 +1,31 @@
 # frozen_string_literal: true
 
-require "test_helper"
+require_relative "../test_ipgeobase"
 
-class TestIpgeobaseLookup < Minitest::Test
-  def test_ipgeobase_lookup_is_exist
+class Lookup < TestIpgeobase
+  def setup
+    request_ip = "8.8.8.8"
+    url = API.template.expand(ip: request_ip).to_s
+
+    @stub = stub_request(:get, url).to_return body: load_fixture("stub.xml")
+
+    @metadata = Ipgeobase.lookup request_ip
+  end
+
+  def test_is_exist
     assert { Ipgeobase.respond_to? :lookup }
   end
 
-  class TestIpgeobaseLookupMetadataProperties < TestHelper
-    def setup
-      request_ip = "8.8.8.8"
-      url = API.template.expand(ip: request_ip).to_s
+  def test_http_query
+    assert_requested @stub
+  end
 
-      stub_request(:get, url)
-        .to_return body: load_fixture("stub.xml")
+  def test_return_object
+    assert_instance_of Ipgeobase::Metadata, @metadata
+  end
 
-      @metadata = Ipgeobase.lookup request_ip
-    end
-
-    def test_ipgeobase_lookup_return_object
-      assert_instance_of Ipgeobase::Metadata, @metadata
-    end
-
-    def test_ipgeobase_lookup_metadata_properties_is_exist
+  class Properties < Lookup
+    def test_is_exist
       expected_properties = %i[city country countryCode lat lon]
 
       expected_properties.each do |expected_property|
@@ -30,7 +33,7 @@ class TestIpgeobaseLookup < Minitest::Test
       end
     end
 
-    def test_ipgeobase_lookup_metadata_properties
+    def test_properties
       expected_values = {
         city: "Ashburn",
         country: "United States",

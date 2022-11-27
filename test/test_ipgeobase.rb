@@ -2,7 +2,7 @@
 
 require "test_helper"
 
-class TestIpgeobase < Minitest::Test
+class TestIpgeobase < TestHelper
   def test_ipgeobase_is_module
     assert_instance_of Module, Ipgeobase
   end
